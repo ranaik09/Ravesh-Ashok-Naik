@@ -12,7 +12,7 @@ import {
     Rocket, Star, MessageSquare, Send, ExternalLink,
     Atom, Box, Wind, FileCode, Bug, Server, Cpu, Wifi, Database, BarChart3,
     ChevronDown, Layers, Building2, GitFork, Sparkles, Filter, Laptop,
-    Zap, RefreshCw, RotateCw, Gamepad2, MousePointerClick, Cuboid
+    Calendar, Clock, ArrowRight, FileText
 } from 'lucide-react';
 
 interface UIOverlayProps {
@@ -41,6 +41,16 @@ interface Project {
     logoUrl?: string;
 }
 
+interface BlogPost {
+    id: number;
+    title: string;
+    excerpt: string;
+    date: string;
+    readTime: string;
+    tags: string[];
+    link: string;
+}
+
 export const UIOverlay: React.FC<UIOverlayProps> = ({
   appState,
   isAutoRotate,
@@ -52,7 +62,7 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
   isDarkMode,
   toggleTheme
 }) => {
-  const [activeTab, setActiveTab] = useState<'summary' | 'experience' | 'skills' | 'education' | 'projects' | 'voxel'>('summary');
+  const [activeTab, setActiveTab] = useState<'summary' | 'experience' | 'skills' | 'education' | 'projects' | 'blogs'>('summary');
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory | 'All'>('All');
 
   // Interactive State for Projects
@@ -96,6 +106,45 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
           reviews: ["Innovative use of facial recognition."],
           link: "#",
           category: 'Academic'
+      }
+  ]);
+
+  const [blogs] = useState<BlogPost[]>([
+      {
+          id: 1,
+          title: "Deep Dive into Windows Kernel Debugging with WinDbg",
+          excerpt: "Exploring advanced debugging techniques for KMDF drivers, analyzing crash dumps, and using the WinDbg JS API for automation.",
+          date: "Oct 12, 2023",
+          readTime: "8 min read",
+          tags: ["Kernel", "Debugging", "Windows"],
+          link: "#"
+      },
+      {
+          id: 2,
+          title: "Optimizing Firmware for Automotive Protocols",
+          excerpt: "Best practices for writing low-latency C firmware for CAN and LIN communication on embedded systems.",
+          date: "Aug 05, 2023",
+          readTime: "6 min read",
+          tags: ["Embedded", "C", "Automotive"],
+          link: "#"
+      },
+      {
+          id: 3,
+          title: "Building Intelligent Test Automation Agents",
+          excerpt: "How to design Python agents that not only execute tests but analyze failures using ELK stack patterns.",
+          date: "May 20, 2023",
+          readTime: "5 min read",
+          tags: ["Python", "Automation", "AI"],
+          link: "#"
+      },
+      {
+          id: 4,
+          title: "Migrating from WDF to NI Linux Real-Time",
+          excerpt: "A comparative guide on porting driver logic from Windows Driver Framework to a Real-Time Linux environment.",
+          date: "Feb 14, 2023",
+          readTime: "10 min read",
+          tags: ["Linux", "Drivers", "Migration"],
+          link: "#"
       }
   ]);
 
@@ -168,7 +217,7 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
                 <div className="flex flex-col md:flex-row md:items-center gap-8 mb-10 animate-slide-up">
                     <div className={`w-32 h-32 md:w-40 md:h-40 rounded-full border-4 ${isDarkMode ? 'border-[#6366f1]' : 'border-indigo-500'} overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.25)] ${isDarkMode ? 'bg-slate-800' : 'bg-white'} transition-transform duration-500 hover:scale-105 shrink-0 animate-float`}>
                         <img 
-                            src="https://raw.githubusercontent.com/ranaik09/Ravesh-Ashok-Naik/main/Images/ranaik_logo.jpeg" 
+                            src="https://raw.githubusercontent.com/ranaik09/Ravesh_Ashok_Naik/main/ranaik_logo.jpeg" 
                             alt="Ravesh Avatar" 
                             className="w-full h-full object-cover" 
                         />
@@ -188,7 +237,6 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
                     <div className="md:ml-auto flex gap-3 mt-4 md:mt-0 animate-slide-up delay-300">
                         <SocialBtn isDarkMode={isDarkMode} href="https://github.com/ranaik09" icon={<Github size={20} />} label="GitHub" />
                         <SocialBtn isDarkMode={isDarkMode} href="https://linkedin.com/in/ranaik587" icon={<Linkedin size={20} />} label="LinkedIn" />
-                        <SocialBtn isDarkMode={isDarkMode} href="#" icon={<BookOpen size={20} />} label="Technical Blog" />
                         <SocialBtn isDarkMode={isDarkMode} href="mailto:ravesh.ashok.naik@gmail.com" icon={<Mail size={20} />} label="Email" />
                         <SocialBtn isDarkMode={isDarkMode} href="tel:+919731239300" icon={<Phone size={20} />} label="Call" />
                     </div>
@@ -201,7 +249,7 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
                     <NavBtn isDarkMode={isDarkMode} active={activeTab === 'projects'} onClick={() => setActiveTab('projects')} icon={<Rocket size={18}/>} label="Projects" />
                     <NavBtn isDarkMode={isDarkMode} active={activeTab === 'skills'} onClick={() => setActiveTab('skills')} icon={<Code2 size={18}/>} label="Skills" />
                     <NavBtn isDarkMode={isDarkMode} active={activeTab === 'education'} onClick={() => setActiveTab('education')} icon={<GraduationCap size={18}/>} label="Education" />
-                    <NavBtn isDarkMode={isDarkMode} active={activeTab === 'voxel'} onClick={() => setActiveTab('voxel')} icon={<Cuboid size={18}/>} label="Voxel Engine" />
+                    <NavBtn isDarkMode={isDarkMode} active={activeTab === 'blogs'} onClick={() => setActiveTab('blogs')} icon={<BookOpen size={18}/>} label="Blogs" />
                 </div>
             </div>
 
@@ -420,101 +468,19 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
                     </div>
                 )}
                 
-                {activeTab === 'voxel' && (
-                    <div className="space-y-12 animate-slide-up">
-                        <div className="border-b pb-4 border-slate-200/50">
-                            <SectionTitle isDarkMode={isDarkMode} icon={<Cuboid size={24} />} title="The Voxel Engine" />
+                {activeTab === 'blogs' && (
+                    <div className="space-y-12">
+                         <div className="border-b pb-4 border-slate-200/50 animate-slide-up">
+                            <SectionTitle isDarkMode={isDarkMode} icon={<BookOpen size={24} />} title="Technical Writing & Thoughts" />
                         </div>
 
-                        <div className={`text-lg leading-relaxed font-medium space-y-6 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                            <p>
-                                This portfolio is built upon a custom <strong className={theme.accentText}>Three.js Voxel Engine</strong>. 
-                                Unlike traditional 3D meshes which use triangles, Voxels (Volumetric Pixels) represent data on a regular 3D grid. 
-                                This allows for unique physics interactions where each block is an independent entity.
-                            </p>
+                        <div className="grid grid-cols-1 gap-6">
+                            {blogs.map((blog, index) => (
+                                <div key={blog.id} className="animate-slide-up" style={{ animationDelay: `${index * 100}ms` }}>
+                                    <BlogCard blog={blog} theme={theme} isDarkMode={isDarkMode} />
+                                </div>
+                            ))}
                         </div>
-
-                        {/* Interactive Playground */}
-                        <div className={`p-8 border rounded-3xl transition-all duration-300 ${isDarkMode ? 'bg-slate-800/40 border-slate-700' : 'bg-white border-slate-200 shadow-xl'}`}>
-                             <h4 className={`text-xl font-bold mb-6 flex items-center gap-2 ${theme.textPrimary}`}>
-                                <Gamepad2 size={22} className={isDarkMode ? 'text-[#6366f1]' : 'text-indigo-600'} /> 
-                                Interactive Physics Playground
-                             </h4>
-                             <p className={`text-sm mb-6 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                                 Use the controls below to interact with the 3D scene in real-time. Experience the physics engine by dismantling and rebuilding the model.
-                             </p>
-                             
-                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <ControlBtn 
-                                    onClick={onDismantle} 
-                                    icon={<Zap size={20} />} 
-                                    label="Dismantle" 
-                                    desc="Explode physics" 
-                                    isDarkMode={isDarkMode} 
-                                    color="text-rose-500"
-                                    bgColor="bg-rose-500/10"
-                                />
-                                <ControlBtn 
-                                    onClick={onRebuild} 
-                                    icon={<RefreshCw size={20} />} 
-                                    label="Rebuild" 
-                                    desc="Assemble voxels" 
-                                    isDarkMode={isDarkMode}
-                                    color="text-emerald-500"
-                                    bgColor="bg-emerald-500/10" 
-                                />
-                                <ControlBtn 
-                                    onClick={onToggleRotation} 
-                                    icon={<RotateCw size={20} className={isAutoRotate ? 'animate-spin' : ''} />} 
-                                    label={isAutoRotate ? "Pause Spin" : "Auto Spin"} 
-                                    desc="Toggle rotation" 
-                                    isDarkMode={isDarkMode}
-                                    color="text-sky-500"
-                                    bgColor="bg-sky-500/10"
-                                />
-                                <ControlBtn 
-                                    onClick={() => onSwitchModel(currentModel === 'Avatar' ? 'Workstation' : 'Avatar')} 
-                                    icon={<Cuboid size={20} />} 
-                                    label="Switch Scene" 
-                                    desc={currentModel === 'Avatar' ? 'Show Workspace' : 'Show Avatar'} 
-                                    isDarkMode={isDarkMode}
-                                    color="text-amber-500"
-                                    bgColor="bg-amber-500/10"
-                                />
-                             </div>
-                        </div>
-                        
-                        {/* Benefits / Features */}
-                        <div>
-                             <h4 className={`text-lg font-bold mb-6 ${theme.textPrimary}`}>Why Voxels?</h4>
-                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <BenefitCard 
-                                    title="Volumetric Data" 
-                                    desc="Represents objects as solid volumes rather than hollow shells, perfect for scientific visualization and destructible environments."
-                                    icon={<Database size={20} />}
-                                    isDarkMode={isDarkMode}
-                                />
-                                <BenefitCard 
-                                    title="Retro Aesthetic" 
-                                    desc="Provides a charming 8-bit aesthetic in 3D, bridging the gap between nostalgic pixel art and modern WebGL rendering."
-                                    icon={<MousePointerClick size={20} />}
-                                    isDarkMode={isDarkMode}
-                                />
-                                <BenefitCard 
-                                    title="Performant" 
-                                    desc="Efficiently renders thousands of instances using Three.js InstancedMesh technology for 60fps performance."
-                                    icon={<Cpu size={20} />}
-                                    isDarkMode={isDarkMode}
-                                />
-                             </div>
-                        </div>
-
-                         {/* Link */}
-                         <div className="flex justify-center pt-8 border-t border-slate-200/20">
-                            <a href="https://en.wikipedia.org/wiki/Voxel" target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 font-bold px-6 py-3 rounded-full transition-all hover:scale-105 ${isDarkMode ? 'bg-[#6366f1] text-white shadow-lg shadow-indigo-500/30' : 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'}`}>
-                                Learn more about Voxel Technology <ExternalLink size={16} />
-                            </a>
-                         </div>
                     </div>
                 )}
 
@@ -527,6 +493,44 @@ export const UIOverlay: React.FC<UIOverlayProps> = ({
 };
 
 // --- Sub Components ---
+
+const BlogCard = ({ blog, theme, isDarkMode }: { blog: BlogPost, theme: any, isDarkMode: boolean }) => (
+    <a 
+        href={blog.link}
+        className={`block p-6 rounded-3xl border transition-all duration-300 group hover:scale-[1.01] hover:shadow-2xl ${theme.cardBg} ${theme.border} ${theme.cardHover}`}
+    >
+        <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-3 text-xs font-bold uppercase tracking-wider">
+                    <span className={`${isDarkMode ? 'text-[#6366f1]' : 'text-indigo-600'} flex items-center gap-1`}>
+                        <Calendar size={12} /> {blog.date}
+                    </span>
+                    <span className={`${theme.textSecondary} flex items-center gap-1`}>
+                        <Clock size={12} /> {blog.readTime}
+                    </span>
+                </div>
+                <h3 className={`text-xl font-bold mb-3 group-hover:text-indigo-500 transition-colors ${theme.textPrimary}`}>
+                    {blog.title}
+                </h3>
+                <p className={`text-sm leading-relaxed mb-4 ${theme.textSecondary}`}>
+                    {blog.excerpt}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                    {blog.tags.map(tag => (
+                        <span key={tag} className={`px-2 py-1 rounded-lg text-xs font-bold border ${isDarkMode ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-slate-100 border-slate-200 text-slate-600'}`}>
+                            #{tag}
+                        </span>
+                    ))}
+                </div>
+            </div>
+            <div className="flex items-center justify-end">
+                <div className={`p-3 rounded-full transition-transform duration-300 group-hover:translate-x-2 ${isDarkMode ? 'bg-slate-800 text-white' : 'bg-slate-100 text-indigo-600'}`}>
+                    <ArrowRight size={20} />
+                </div>
+            </div>
+        </div>
+    </a>
+);
 
 const ControlBtn = ({ onClick, icon, label, desc, isDarkMode, color, bgColor }: { onClick: () => void, icon: React.ReactNode, label: string, desc: string, isDarkMode: boolean, color?: string, bgColor?: string }) => (
     <button 
