@@ -13,11 +13,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _sendMessage() {
     if (_messageController.text.trim().isNotEmpty) {
+      final now = DateTime.now();
+      final timeString = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
       setState(() {
         _messages.add({
           'text': _messageController.text,
           'sender': 'user',
-          'time': TimeOfDay.now().format(context),
+          'time': timeString,
         });
       });
       _messageController.clear();
